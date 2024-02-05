@@ -5,9 +5,19 @@
 package frc.robot.subsystems;
 
 import static frc.robot.Constants.DrivetrainConstants.*;
+//#######################################
 import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+//#######################################
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.can.*;
+
+
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -27,27 +37,44 @@ public class CANDrivetrain extends SubsystemBase {
    * member variables and perform any configuration or set up necessary on hardware.
    */
   public CANDrivetrain() {
-    CANSparkMax leftFront = new CANSparkMax(kLeftFrontID, CANSparkLowLevel.MotorType.kBrushed);
-    CANSparkMax leftRear = new CANSparkMax(kLeftRearID, CANSparkLowLevel.MotorType.kBrushed);
-    CANSparkMax rightFront = new CANSparkMax(kRightFrontID, CANSparkLowLevel.MotorType.kBrushed);
-    CANSparkMax rightRear = new CANSparkMax(kRightRearID, MotorType.kBrushed);
+    // CANSparkMax leftFront = new CANSparkMax(kLeftFrontID, CANSparkLowLevel.MotorType.kBrushed);
+    // CANSparkMax leftRear = new CANSparkMax(kLeftRearID, CANSparkLowLevel.MotorType.kBrushed);
+    // CANSparkMax rightFront = new CANSparkMax(kRightFrontID, CANSparkLowLevel.MotorType.kBrushed);
+    // CANSparkMax rightRear = new CANSparkMax(kRightRearID, MotorType.kBrushed);
+    WPI_TalonSRX leftFront = new WPI_TalonSRX(kLeftFrontID);
+    WPI_TalonSRX leftRear = new WPI_TalonSRX(kLeftRearID);
+    WPI_TalonSRX rightFront = new WPI_TalonSRX(kRightFrontID);
+    WPI_TalonSRX rightRear = new WPI_TalonSRX(kRightRearID);
+
+    
+
 
     
 
     /*Sets current limits for the drivetrain motors. This helps reduce the likelihood of wheel spin, reduces motor heating
      *at stall (Drivetrain pushing against something) and helps maintain battery voltage under heavy demand */
-    leftFront.setSmartCurrentLimit(kCurrentLimit);
-    leftRear.setSmartCurrentLimit(kCurrentLimit);
-    rightFront.setSmartCurrentLimit(kCurrentLimit);
-    rightRear.setSmartCurrentLimit(kCurrentLimit);
+    // leftFront.setSmartCurrentLimit(kCurrentLimit);
+    // leftRear.setSmartCurrentLimit(kCurrentLimit);
+    // rightFront.setSmartCurrentLimit(kCurrentLimit);
+    // rightRear.setSmartCurrentLimit(kCurrentLimit);
+    leftFront.configContinuousCurrentLimit(kCurrentLimit);
+    leftRear.configContinuousCurrentLimit(kCurrentLimit);
+    rightFront.configContinuousCurrentLimit(kCurrentLimit);
+    rightRear.configContinuousCurrentLimit(kCurrentLimit);
+
+    
 
     // Set the rear motors to follow the front motors.
-    leftRear.follow(leftFront);
-    rightRear.follow(rightFront);
+    // leftRear.follow(leftFront);
+    // rightRear.follow(rightFront);
+    leftRear.set(ControlMode.Follower, kLeftFrontID);
+    rightRear.set(ControlMode.Follower, kRightFrontID);
 
     // Invert the left side so both side drive forward with positive motor outputs
-    leftFront.setInverted(true);
-    rightFront.setInverted(false);
+    leftFront.setInverted(false);
+    leftRear.setInverted(false);
+    rightFront.setInverted(true);
+    rightRear.setInverted(true);
 
     // Put the front motors into the differential drive object. This will control all 4 motors with
     // the rears set to follow the fronts

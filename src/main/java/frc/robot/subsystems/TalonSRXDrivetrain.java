@@ -25,7 +25,10 @@ public class TalonSRXDrivetrain extends SubsystemBase {
         rightRear.follow(rightFront);
 
         // Invert the left side (if necessary)
-        leftFront.setInverted(true);
+        leftFront.setInverted(false);
+        leftRear. setInverted(false);
+        rightFront.setInverted(true);
+        rightRear. setInverted(true);
 
         // Create the differential drive object
         m_drivetrain = new DifferentialDrive(leftFront, rightFront);

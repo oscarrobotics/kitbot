@@ -14,6 +14,8 @@ public class TalonSRXDrivetrain extends SubsystemBase {
         WPI_TalonSRX rightFront = new WPI_TalonSRX(kRightFrontID);
         WPI_TalonSRX rightRear = new WPI_TalonSRX(kRightRearID);
 
+
+        //testing!!
         // Set current limits (adjust values as needed)
         leftFront.configContinuousCurrentLimit(kCurrentLimit, 0);
         leftRear.configContinuousCurrentLimit(kCurrentLimit, 0);

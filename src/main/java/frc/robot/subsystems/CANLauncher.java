@@ -50,6 +50,15 @@ public class CANLauncher extends SubsystemBase {
         });
   }
 
+  public Command getFeedCommand(){
+    return this.startEnd(() -> {
+      setLaunchWheel(-kLaunchFeederSpeed*0.05);
+      setFeedWheel(-kIntakeFeederSpeed*0.5);
+    }, () -> {
+      stop();
+    });
+  }
+
   // An accessor method to set the speed (technically the output percentage) of the launch wheel
   public void setLaunchWheel(double speed) {
     m_launchWheel.set(speed);
